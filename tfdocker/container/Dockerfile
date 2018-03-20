@@ -6,12 +6,17 @@ FROM ubuntu:16.04
 
 MAINTAINER Amazon AI <sage-learner@amazon.com>
 
-
-RUN apt-get -y update && apt-get install -y --no-install-recommends \
+RUN mkdir -p /opt/ml/input/config && \
+    mkdir -p /opt/ml/input/data/training && \
+    mkdir -p /opt/ml/input/data/eval && \
+    mkdir -p /opt/ml/model && \
+    mkdir -p /opt/ml/output && \
+    apt-get -y update && apt-get install -y --no-install-recommends \
          wget \
          python \
          nginx \
          ca-certificates \
+         git \
     && rm -rf /var/lib/apt/lists/*
 
 # Here we get all python packages.
@@ -24,6 +29,9 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py && \
         (cd /usr/local/lib/python2.7/dist-packages/scipy/.libs; rm *; ln ../../numpy/.libs/* .) && \
         rm -rf /root/.cache
 
+## My Code for TF retraining
+RUN pip install tensorflow
+
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
 # output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
 # keeps Python from writing the .pyc files which are unnecessary in this case. We also update
@@ -34,6 +42,9 @@ ENV PYTHONDONTWRITEBYTECODE=TRUE
 ENV PATH="/opt/program:${PATH}"
 
 # Set up the program in the image
-COPY decision_trees /opt/program
+#COPY decision_trees /opt/program
+COPY xferLearn /opt/program
 WORKDIR /opt/program
+
+#ENTRYPOINT ["python", "/opt/program/retrain.py"]
 
