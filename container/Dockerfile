@@ -7,7 +7,7 @@ FROM ubuntu:16.04
 MAINTAINER Amazon AI <sage-learner@amazon.com>
 
 RUN mkdir -p /opt/ml/input/config && \
-    mkdir -p /opt/ml/input/data/training && \
+    mkdir -p /opt/ml/input/data/train && \
     mkdir -p /opt/ml/input/data/eval && \
     mkdir -p /opt/ml/model && \
     mkdir -p /opt/ml/output && \
