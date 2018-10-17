@@ -16,4 +16,4 @@ mkdir -p /tmp/retrain_logs
 rm test_dir/model/*
 rm test_dir/output/*
 
-docker run -v $(pwd)/test_dir:/opt/ml -v  /tmp/retrain_logs:/tmp/retrain_logs --rm ${image} train
+docker run -v $(pwd)/test_dir:/opt/ml -v  /tmp:/tmp  --rm ${image} train
